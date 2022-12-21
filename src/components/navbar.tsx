@@ -15,7 +15,12 @@ const Navbar = () => {
         <div className="navbar">
             <div className='links'>
                 <Link to="/">Home</Link>
-                <Link to="/login">Login</Link>
+                {/* if user is not logged in, show login, otherwise show create post */}
+                {!user ? (
+                    <Link to="/login">Login</Link>
+                ) : (
+                    <Link to="/createpost">Create Post</Link>
+                )}
             </div>
             <div className='user'>
                 {/* If user is loggin in, display name & image. */}
