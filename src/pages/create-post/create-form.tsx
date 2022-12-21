@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { addDoc, collection} from 'firebase/firestore';
 import { auth, db } from '../../config/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom'
 
 interface CreateFormData {
     title: string;
@@ -13,7 +14,7 @@ interface CreateFormData {
 //defines schema for yup validation
 const CreateForm = () => {
     const [user] = useAuthState(auth);
-
+    const navigate = useNavigate();
 
     const schema = yup.object().shape({
         title: yup.string().required('You must add a title.'),
@@ -32,7 +33,9 @@ const CreateForm = () => {
             ...data,
             username: user?.displayName,
             userId: user?.uid,
-        })
+        });
+
+        navigate('/');
     }
 
     return ( 
@@ -41,7 +44,7 @@ const CreateForm = () => {
             <p style={{color: 'red'}}> {errors.title?.message}</p>
             <textarea placeholder='description...' {...register('description')}/>
             <p style={{color: 'red'}}> {errors.description?.message}</p>
-            <input type='submit' />
+            <input type='submit' className='submitForm' />
         </form>
     );
 }
